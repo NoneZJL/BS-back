@@ -1,5 +1,7 @@
 package org.zjubs.pricecomwebbackend.query;
 
+import com.auth0.jwt.interfaces.Payload;
+
 public class ApiResult {
 
     /* whether the operation is successfully completed */
@@ -25,5 +27,16 @@ public class ApiResult {
         this.payload = payload;
     }
 
+    public static ApiResult success() {
+        return new ApiResult(true, null, null);
+    }
+
+    public static ApiResult success(Object payload) {
+        return new ApiResult(true, null, payload);
+    }
+
+    public static ApiResult fail(String err) {
+        return new ApiResult(false, err, null);
+    }
 }
 
