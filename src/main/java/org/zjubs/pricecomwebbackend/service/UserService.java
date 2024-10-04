@@ -23,7 +23,8 @@ public class UserService {
 
     public ApiResult login(String username, String password) {
         try {
-            User user = userMapper.queryUserByUsernameAndPassword(username, password);
+            String encodePassword = EncryptSha256Util.getSha256Str(password);
+            User user = userMapper.queryUserByUsernameAndPassword(username, encodePassword);
             if (user != null) {
                 String token = JWTUtil.getTokenByIdAndUsername(user.getId(), user.getUsername());
                 return ApiResult.success(token);
