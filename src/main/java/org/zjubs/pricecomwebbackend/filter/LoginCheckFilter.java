@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.zjubs.pricecomwebbackend.query.RespResult;
-import org.zjubs.pricecomwebbackend.utils.JWTUtils;
+import org.zjubs.pricecomwebbackend.utils.JWTUtil;
 
 import java.io.IOException;
 
@@ -50,7 +50,7 @@ public class LoginCheckFilter implements Filter {
         }
 
         try {
-            JWTUtils.verify(jwt);
+            JWTUtil.verify(jwt);
         } catch (Exception e) {
             e.printStackTrace();
             log.info("解析令牌失败");

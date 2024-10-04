@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.zjubs.pricecomwebbackend.query.ApiResult;
 import org.zjubs.pricecomwebbackend.query.LoginRequest;
 import org.zjubs.pricecomwebbackend.query.RespResult;
+import org.zjubs.pricecomwebbackend.query.UserRegister;
 import org.zjubs.pricecomwebbackend.service.UserService;
 
 @RestController
@@ -34,4 +35,23 @@ public class UserController {
         }
     }
 
+    @GetMapping("/getEmailCode")
+    public RespResult getJustifyCode(@RequestParam String email) {
+        ApiResult apiResult = userService.sendEmailJustifyCode(email);
+        if (apiResult.ok) {
+            return RespResult.success(apiResult.payload);
+        } else {
+            return RespResult.fail(apiResult.message);
+        }
+    }
+
+    @PostMapping("/register")
+    public RespResult userRegister(@RequestBody UserRegister userRegister) {
+        ApiResult apiResult = userService.userRegister(userRegister.getUsername(), userRegister.getPassword(), userRegister.getEmail(), userRegister.getEmailCode(), userRegister.getLastEmailCode());
+        if (apiResult.ok) {
+            return RespResult.success();
+        } else {
+            return RespResult.fail(apiResult.message);
+        }
+    }
 }

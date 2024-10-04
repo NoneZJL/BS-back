@@ -1,20 +1,20 @@
 package org.zjubs.pricecomwebbackend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.zjubs.pricecomwebbackend.entity.User;
 import org.zjubs.pricecomwebbackend.query.ApiResult;
-import org.zjubs.pricecomwebbackend.utils.EmailUtils;
-import org.zjubs.pricecomwebbackend.utils.JWTUtils;
-import org.zjubs.pricecomwebbackend.utils.RandomUtils;
+import org.zjubs.pricecomwebbackend.utils.EmailUtil;
+import org.zjubs.pricecomwebbackend.utils.EncryptSha256Util;
+import org.zjubs.pricecomwebbackend.utils.JWTUtil;
+import org.zjubs.pricecomwebbackend.utils.RandomUtil;
 
 @Service
 public class UserService {
     @Autowired
     private org.zjubs.pricecomwebbackend.mapper.UserMapper userMapper;
     @Autowired
-    private EmailUtils emailUtils;
+    private EmailUtil emailUtils;
 
     public ApiResult queryUserByUsername(String username) {
         User user = userMapper.queryUserByUsername(username);
@@ -25,7 +25,7 @@ public class UserService {
         try {
             User user = userMapper.queryUserByUsernameAndPassword(username, password);
             if (user != null) {
-                String token = JWTUtils.getTokenByIdAndUsername(user.getId(), user.getUsername());
+                String token = JWTUtil.getTokenByIdAndUsername(user.getId(), user.getUsername());
                 return ApiResult.success(token);
             } else {
                 return new ApiResult(false, "用户名或密码不正确");
@@ -38,9 +38,33 @@ public class UserService {
 
     public ApiResult sendEmailJustifyCode(String email) {
         try {
-            String verificationCode = RandomUtils.generateVerificationCode();
+            String verificationCode = RandomUtil.generateVerificationCode();
             emailUtils.sendAuthCodeEmail(email, verificationCode);
-            return ApiResult.success(verificationCode);
+            String sha256Str = EncryptSha256Util.getSha256Str(verificationCode);
+            return ApiResult.success(sha256Str);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResult.fail(e.getMessage());
+        }
+    }
+
+    public ApiResult userRegister(String username, String password, String email, String emailCode, String lastEmailCode) {
+        try {
+            String newEmailCode = EncryptSha256Util.getSha256Str(emailCode);
+            if (!newEmailCode.equals(lastEmailCode)) {
+                return ApiResult.fail("验证码错误");
+            }
+            User user1 = userMapper.queryUserByUsername(username);
+            if (user1 != null) {
+                return ApiResult.fail("用户名已存在");
+            }
+            User user2 = userMapper.queryUserByEmail(email);
+            if (user2 != null) {
+                return ApiResult.fail("该邮箱已被注册");
+            }
+            String encodePassword = EncryptSha256Util.getSha256Str(password);
+            userMapper.userRegister(username, encodePassword, email);
+            return ApiResult.success();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResult.fail(e.getMessage());
