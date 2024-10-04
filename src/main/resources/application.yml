@@ -6,6 +6,19 @@ spring:
     username: root
     url: jdbc:mysql://localhost:3306/price_compare?allowPublicKeyRetrieval=true&useSSL=false
     password: "zhao1290"
+  mail:
+    username: zjubszjl@163.com
+    password: CZaRY36PTYuw8yd6
+    port: 465
+    host: smtp.163.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
 
 server:
   port: 8082

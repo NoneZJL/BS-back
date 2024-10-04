@@ -5,14 +5,18 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.zjubs.pricecomwebbackend.service.UserService;
 
 import java.util.Date;
 
 @SpringBootTest
 class PriceComWebBackendApplicationTests {
 
-	@Test
+	@Autowired
+	private UserService userService;
+ 	@Test
 	void contextLoads() {
 	}
 
@@ -43,6 +47,12 @@ class PriceComWebBackendApplicationTests {
 		String username = decodesJWT.getClaim("username").asString();
 		Date expiresAt = decodesJWT.getExpiresAt();
 		System.out.println("id = " + id + ", username = " + username + ", end_time = " + expiresAt);
+	}
+
+	@Test
+	public void sendEmail() {
+//		userService.sendEmailJustifyCode("1445675246@qq.com");
+		userService.sendEmailJustifyCode("1290217090@qq.com");
 	}
 
 }
