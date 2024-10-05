@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.zjubs.pricecomwebbackend.query.ApiResult;
 
 import java.util.Date;
 import java.util.Map;
@@ -68,5 +69,9 @@ public class JWTUtil {
 
     public static String getJustifyCodeByToken(String token) {
         return JWT.require(Algorithm.HMAC256(SIGNAYURE)).build().verify(token).getClaim("justifyCode").asString();
+    }
+
+    public static boolean checkNotLogin(ApiResult apiResult) {
+        return apiResult.message.equals("JWTerror");
     }
 }

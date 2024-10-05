@@ -1,10 +1,10 @@
 package org.zjubs.pricecomwebbackend.query;
 
 public class RespResult {
-    
+
     public int code;
-    public String err; 
-    public Object payload; 
+    public String err;
+    public Object payload;
 
     public RespResult(int code, String errString, Object payload) {
         this.code = code;
@@ -22,5 +22,9 @@ public class RespResult {
 
     public static RespResult fail(String err) {
         return new RespResult(1, err, null);
+    }
+
+    public static RespResult notLogin() {
+        return new RespResult(2, null, null);
     }
 }

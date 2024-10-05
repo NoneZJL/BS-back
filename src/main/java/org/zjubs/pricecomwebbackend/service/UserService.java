@@ -52,6 +52,12 @@ public class UserService {
 
     public ApiResult userRegister(String username, String password, String email, String emailCode, String lastEmailCode) {
         try {
+            try {
+                JWTUtil.verify(lastEmailCode);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return ApiResult.fail("未获取验证码或者验证码到期，请重新获取");
+            }
             String newEmailCode = EncryptSha256Util.getSha256Str(emailCode);
             String justifyCodeByToken = JWTUtil.getJustifyCodeByToken(lastEmailCode);
             if (!newEmailCode.equals(justifyCodeByToken)) {

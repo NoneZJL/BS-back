@@ -38,5 +38,9 @@ public class ApiResult {
     public static ApiResult fail(String err) {
         return new ApiResult(false, err, null);
     }
+
+    public static ApiResult notLogin() {
+        return ApiResult.fail("JWTerror");
+    }
 }
 
