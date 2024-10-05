@@ -54,4 +54,19 @@ public class JWTUtil {
     public static String getUsernameByToken(String token) {
         return JWT.require(Algorithm.HMAC256(SIGNAYURE)).build().verify(token).getClaim("username").asString();
     }
+
+    public static String getTokenByEmailAndJustifyCode(String email, String justifyCode) {
+        JWTCreator.Builder builder = JWT.create();
+        builder.withClaim("email", email).withClaim("justifyCode", justifyCode);
+        builder.withExpiresAt(new Date(System.currentTimeMillis() + 300 * 1000));
+        return builder.sign(Algorithm.HMAC256(SIGNAYURE));
+    }
+
+    public static String getEmailByToken(String token) {
+        return JWT.require(Algorithm.HMAC256(SIGNAYURE)).build().verify(token).getClaim("email").asString();
+    }
+
+    public static String getJustifyCodeByToken(String token) {
+        return JWT.require(Algorithm.HMAC256(SIGNAYURE)).build().verify(token).getClaim("justifyCode").asString();
+    }
 }

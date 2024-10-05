@@ -42,7 +42,8 @@ public class UserService {
             String verificationCode = RandomUtil.generateVerificationCode();
             emailUtils.sendAuthCodeEmail(email, verificationCode);
             String sha256Str = EncryptSha256Util.getSha256Str(verificationCode);
-            return ApiResult.success(sha256Str);
+            String tokenByEmailAndJustifyCode = JWTUtil.getTokenByEmailAndJustifyCode(email, sha256Str);
+            return ApiResult.success(tokenByEmailAndJustifyCode);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResult.fail(e.getMessage());
@@ -52,7 +53,8 @@ public class UserService {
     public ApiResult userRegister(String username, String password, String email, String emailCode, String lastEmailCode) {
         try {
             String newEmailCode = EncryptSha256Util.getSha256Str(emailCode);
-            if (!newEmailCode.equals(lastEmailCode)) {
+            String justifyCodeByToken = JWTUtil.getJustifyCodeByToken(lastEmailCode);
+            if (!newEmailCode.equals(justifyCodeByToken)) {
                 return ApiResult.fail("验证码错误");
             }
             User user1 = userMapper.queryUserByUsername(username);
@@ -62,6 +64,10 @@ public class UserService {
             User user2 = userMapper.queryUserByEmail(email);
             if (user2 != null) {
                 return ApiResult.fail("该邮箱已被注册");
+            }
+            String emailByToken = JWTUtil.getEmailByToken(lastEmailCode);
+            if (!emailByToken.equals(email)) {
+                return ApiResult.fail("请确保注册邮箱和获取验证码的邮箱是同一个邮箱");
             }
             String encodePassword = EncryptSha256Util.getSha256Str(password);
             userMapper.userRegister(username, encodePassword, email);
