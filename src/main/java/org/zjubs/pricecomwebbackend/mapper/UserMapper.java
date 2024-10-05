@@ -3,6 +3,7 @@ package org.zjubs.pricecomwebbackend.mapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.zjubs.pricecomwebbackend.entity.User;
 
 @Mapper
@@ -18,4 +19,7 @@ public interface UserMapper {
 
     @Insert("insert into user (username, password, email) VALUES (#{username}, #{password}, #{email})")
     public void userRegister(String username, String password, String email);
+
+    @Update("update user set password = #{password} where email = #{email}")
+    public void modifyPasswordByEmail(String password, String email);
 }
