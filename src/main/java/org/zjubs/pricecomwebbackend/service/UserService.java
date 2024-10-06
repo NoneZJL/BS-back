@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zjubs.pricecomwebbackend.entity.User;
 import org.zjubs.pricecomwebbackend.query.ApiResult;
+import org.zjubs.pricecomwebbackend.query.LoginByEmailAnswer;
 import org.zjubs.pricecomwebbackend.query.ModifyPassword;
 import org.zjubs.pricecomwebbackend.utils.EmailUtil;
 import org.zjubs.pricecomwebbackend.utils.EncryptSha256Util;
@@ -24,19 +25,44 @@ public class UserService {
 
     public ApiResult login(String username, String password) {
         try {
+            User user1 = userMapper.queryUserByUsername(username);
+            if (user1 == null) {
+                return ApiResult.fail("该用户名不存在");
+            }
             String encodePassword = EncryptSha256Util.getSha256Str(password);
             User user = userMapper.queryUserByUsernameAndPassword(username, encodePassword);
             if (user != null) {
                 String token = JWTUtil.getTokenByIdAndUsername(user.getId(), user.getUsername());
                 return ApiResult.success(token);
             } else {
-                return new ApiResult(false, "用户名或密码不正确");
+                return new ApiResult(false, "用户名与密码不匹配");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResult.fail(e.getMessage());
         }
     }
+
+    public ApiResult loginByEmail(String email, String password) {
+        try {
+            User findUser = userMapper.queryUserByEmail(email);
+            if (findUser == null) {
+                return ApiResult.fail("改邮箱不存在对应的用户");
+            }
+            String encodePassword = EncryptSha256Util.getSha256Str(password);
+            User user = userMapper.queryUserByEmailAndPassword(email, encodePassword);
+            if (user == null) {
+                return ApiResult.fail("邮箱与密码不匹配");
+            } else {
+                String token = JWTUtil.getTokenByIdAndUsername(user.getId(), user.getUsername());
+                return ApiResult.success(new LoginByEmailAnswer(token, user.getUsername()));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResult.fail(e.getMessage());
+        }
+    }
+
 
     public ApiResult sendEmailJustifyCode(String email) {
         try {

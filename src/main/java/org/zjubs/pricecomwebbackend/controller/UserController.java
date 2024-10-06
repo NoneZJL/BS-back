@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("/getEmailCodeInForgetPassword")
     public RespResult getEmailCodeInForgetPassword(@RequestParam String email) {
         ApiResult apiResult = userService.sendEmailCodeInForgetPassword(email);
-        if(apiResult.ok) {
+        if (apiResult.ok) {
             return RespResult.success(apiResult.payload);
         } else {
             return RespResult.fail(apiResult.message);
@@ -33,8 +33,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public RespResult login(@RequestBody LoginRequest loginRequest){
+    public RespResult login(@RequestBody LoginRequest loginRequest) {
         ApiResult apiResult = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
+        if (apiResult.ok) {
+            return RespResult.success(apiResult.payload);
+        } else {
+            return RespResult.fail(apiResult.message);
+        }
+    }
+
+    @PostMapping("/loginByEmail")
+    public RespResult loginByEmail(@RequestBody LoginByEmail loginByEmail) {
+        ApiResult apiResult = userService.loginByEmail(loginByEmail.getEmail(), loginByEmail.getPassword());
         if (apiResult.ok) {
             return RespResult.success(apiResult.payload);
         } else {
