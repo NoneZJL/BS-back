@@ -54,5 +54,4 @@ class PriceComWebBackendApplicationTests {
 //		userService.sendEmailJustifyCode("1445675246@qq.com");
 		userService.sendEmailJustifyCode("1290217090@qq.com");
 	}
-
 }
