@@ -20,6 +20,7 @@ public class JdController {
     @GetMapping("/getGoodsBySearchingName")
     public RespResult getGoodsBySearchingName(@RequestParam String name, HttpServletRequest request){
         String token = request.getHeader("Authorization");
+        System.out.println("jd-token:"+token);
         ApiResult apiResult = jdService.getGoodsBySearchingName(name, token);
         if (apiResult.ok) {
             return RespResult.success(apiResult.payload);

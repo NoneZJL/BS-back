@@ -25,7 +25,7 @@ public class JDCrawlerUtil {
             Elements ul = document.getElementsByClass("gl-warp clearfix");
             Elements liList = ul.select("li");
             for (Element element : liList) {
-                System.out.println("------------------");
+//                System.out.println("------------------");
                 // 过滤内层标签
                 if ("ps-item".equals(element.attr("class"))) {
                     continue;
@@ -41,10 +41,10 @@ public class JDCrawlerUtil {
 //                String price = extractNumber(priceText);
 //                String shopName = Objects.requireNonNull(element.getElementsByClass("p-shop").first()).text();
 //                String description = Objects.requireNonNull(element.getElementsByTag("em").last()).text();
-                System.out.println("img = " + pict);
-                System.out.println("price = " + price);
-                System.out.println("shopName = " + shopName);
-                System.out.println("name = " + description);
+//                System.out.println("img = " + pict);
+//                System.out.println("price = " + price);
+//                System.out.println("shopName = " + shopName);
+//                System.out.println("name = " + description);
                 Good good = new Good();
                 good.setQueryName(name);
                 good.setDescription(description);

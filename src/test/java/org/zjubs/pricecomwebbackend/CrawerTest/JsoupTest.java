@@ -7,6 +7,7 @@ import org.zjubs.pricecomwebbackend.entity.Good;
 import org.zjubs.pricecomwebbackend.query.ApiResult;
 import org.zjubs.pricecomwebbackend.service.JdService;
 import org.zjubs.pricecomwebbackend.utils.JDCrawlerUtil;
+import org.zjubs.pricecomwebbackend.utils.SnCrawlerUtil;
 
 import java.util.List;
 
@@ -15,7 +16,6 @@ public class JsoupTest {
     @Autowired
     private JdService jdService;
 
-    String url = "https://search.jd.com/Search?keyword=";
 
     @Test
     public void testGetUrl() {
@@ -25,5 +25,10 @@ public class JsoupTest {
         } else {
             System.out.println("失败");
         }
+    }
+
+    @Test
+    public void snTest() {
+        List<Good> search = SnCrawlerUtil.search("电脑");
     }
 }
