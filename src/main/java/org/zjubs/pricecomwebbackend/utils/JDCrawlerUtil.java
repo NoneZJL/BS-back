@@ -26,11 +26,21 @@ public class JDCrawlerUtil {
             Elements liList = ul.select("li");
             for (Element element : liList) {
                 System.out.println("------------------");
-                String pict = Objects.requireNonNull(element.getElementsByTag("img").first()).attr("data-lazy-img");
-                String priceText = Objects.requireNonNull(element.getElementsByClass("p-price").first()).text();
+                // 过滤内层标签
+                if ("ps-item".equals(element.attr("class"))) {
+                    continue;
+                }
+                String pict = element.getElementsByTag("img").first().attr("data-lazy-img");
+                String priceText = element.getElementsByClass("p-price").first().text();
                 String price = extractNumber(priceText);
-                String shopName = Objects.requireNonNull(element.getElementsByClass("p-shop").first()).text();
-                String description = Objects.requireNonNull(element.getElementsByTag("em").last()).text();
+                String shopName = element.getElementsByClass("p-shop").first().text();
+                String description = element.getElementsByTag("em").last().text();
+//                System.out.println(element);
+//                String pict = Objects.requireNonNull(element.getElementsByTag("img").first()).attr("data-lazy-img");
+//                String priceText = Objects.requireNonNull(element.getElementsByClass("p-price").first()).text();
+//                String price = extractNumber(priceText);
+//                String shopName = Objects.requireNonNull(element.getElementsByClass("p-shop").first()).text();
+//                String description = Objects.requireNonNull(element.getElementsByTag("em").last()).text();
                 System.out.println("img = " + pict);
                 System.out.println("price = " + price);
                 System.out.println("shopName = " + shopName);

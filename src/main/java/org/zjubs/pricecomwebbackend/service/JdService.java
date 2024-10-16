@@ -37,7 +37,11 @@ public class JdService {
                 System.out.println(e.getMessage());
                 return ApiResult.notLogin();
             }
-            List<Good> goodList = jdMapper.queryGoodsBySearchingName(name);
+            //List<Good> goodList = jdMapper.queryGoodsBySearchingName(name);
+            List<Good> goodList = JDCrawlerUtil.searchAndInsert(name);
+            for (Good good: Objects.requireNonNull(goodList)) {
+                jdMapper.insetItems(good);
+            }
             return ApiResult.success(goodList);
         } catch (Exception e) {
             System.out.println(e.getMessage());
