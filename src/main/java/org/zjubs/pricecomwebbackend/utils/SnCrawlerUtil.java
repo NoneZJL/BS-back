@@ -41,7 +41,7 @@ public class SnCrawlerUtil {
             driver.get(url);
 
             // 等待页面加载完成
-            Thread.sleep(3000); // 等待5秒，确保页面加载完成
+            Thread.sleep(10000); // 等待5秒，确保页面加载完成
 
             // 获取页面源代码
             String pageSource = driver.getPageSource();
@@ -64,6 +64,7 @@ public class SnCrawlerUtil {
             Elements ul = document.getElementsByClass("general clearfix");
             Elements liList = ul.select("li");
             List<Good> goodList = new ArrayList<Good>();
+            int i = 0;
             for (Element li : liList) {
                 // 获取商品名称
                 String productName = li.select(".title-selling-point a").text();
@@ -91,13 +92,10 @@ public class SnCrawlerUtil {
                 }
                 good.setShopName(productName);
                 goodList.add(good);
-//                System.out.println("商品名称: " + productName);
-//                System.out.println("商品价格: " + price);
-//                System.out.println("商品链接: " + productLink);
-//                System.out.println("商品图片: " + productImage);
-//                System.out.println("商品评价: " + productReviews);
-//                System.out.println("商品自营: " + productSelf);
-//                System.out.println("=============================");
+                i++;
+                if (i == 16) {
+                    break;
+                }
             }
             return goodList;
         } catch (Exception e) {
