@@ -8,6 +8,7 @@ import org.zjubs.pricecomwebbackend.query.ApiResult;
 import org.zjubs.pricecomwebbackend.service.JdService;
 import org.zjubs.pricecomwebbackend.utils.JDCrawlerUtil;
 import org.zjubs.pricecomwebbackend.utils.SnCrawlerUtil;
+import org.zjubs.pricecomwebbackend.utils.WphCrawlerUtil;
 
 import java.util.List;
 
@@ -30,5 +31,11 @@ public class JsoupTest {
     @Test
     public void snTest() {
         List<Good> search = SnCrawlerUtil.search("电脑");
+    }
+
+    @Test
+    public void wphTest() {
+        List<Good> search = WphCrawlerUtil.search("手机");
+        System.out.println(search);
     }
 }
