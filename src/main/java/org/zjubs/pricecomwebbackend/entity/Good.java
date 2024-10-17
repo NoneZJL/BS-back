@@ -18,4 +18,5 @@ public class Good {
     private String category;
     private LocalDateTime time;
     private String queryName;
+    private String detailUrl;
 }

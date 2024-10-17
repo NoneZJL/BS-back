@@ -77,7 +77,8 @@ public class SnCrawlerUtil {
                 String price = extractNumber(productPrice);
 
                 // 获取商品链接
-                // String productLink = li.select(".res-img a").attr("href");
+                String productLink = li.select(".res-img a").attr("href");
+                System.out.println(productLink);
                 // 获取商品图片链接
                 String productImage = li.select(".res-img img").attr("src");
                 // 获取商品评价数量
@@ -94,6 +95,7 @@ public class SnCrawlerUtil {
                     good.setPrice(0.0); // 设置默认价格
                 }
                 good.setShopName(productName);
+                good.setDetailUrl(productLink);
                 goodList.add(good);
 //                i++;
 //                if (i == 16) {

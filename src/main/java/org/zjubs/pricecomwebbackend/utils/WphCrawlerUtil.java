@@ -65,12 +65,14 @@ public class WphCrawlerUtil {
                 // String discount = goodsItem.select(".c-goods-item__discount").text();
                 // 提取图片路径
                 String imageUrl = goodsItem.select(".c-goods-item__img img.lazy").attr("data-original");
-//                String imageUrl = goodsItem.select(".c-goods-item__img img").attr("src");
+                // 提取商品链接
+                String productLink = goodsItem.select("a").attr("href");
                 // 输出商品信息
                 Good good = new Good();
                 good.setQueryName(name);
                 good.setDescription(productName);
                 good.setImg(imageUrl);
+                good.setDetailUrl(productLink);
                 if (!price.isEmpty()) {
                     good.setPrice(Double.valueOf(price));
                 } else {

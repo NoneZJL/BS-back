@@ -16,8 +16,8 @@ create table if not exists history (
    id int not null auto_increment ,
    user_id int not null ,
    content varchar(256) not null ,
-    time datetime not null default current_timestamp ,
-    primary key (id)
+   `time` datetime not null default current_timestamp ,
+   primary key (id)
 );
 
 create table if not exists jd_items (
@@ -26,9 +26,10 @@ create table if not exists jd_items (
     description varchar(255) not null ,
     img varchar(255) not null ,
     category varchar(255) default null ,
-    time datetime not null default current_timestamp,
+    `time` datetime not null default current_timestamp,
     shop_name varchar(255) default null ,
     query_name varchar(255) not null ,
+    detail_url varchar(255) default null ,
     primary key (id)
 );
 
@@ -38,9 +39,10 @@ create table if not exists sn_items (
     description varchar(255) not null ,
     img varchar(255) not null ,
     category varchar(255) default null ,
-    time datetime not null default current_timestamp,
+    `time` datetime not null default current_timestamp,
     shop_name varchar(255) default null ,
     query_name varchar(255) not null ,
+    detail_url varchar(255) default null ,
     primary key (id)
 );
 
@@ -50,8 +52,9 @@ create table if not exists wph_items (
     description varchar(255) not null ,
     img varchar(255) not null ,
     category varchar(255) default null ,
-    time datetime not null default current_timestamp,
+    `time` datetime not null default current_timestamp,
     shop_name varchar(255) default null ,
     query_name varchar(255) not null ,
+    detail_url varchar(255) default null ,
     primary key (id)
 );

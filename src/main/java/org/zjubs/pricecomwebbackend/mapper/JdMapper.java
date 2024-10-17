@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface JdMapper {
 
-    @Insert("insert into jd_items (price, description, img, shop_name, query_name) value (#{price}, #{description}, #{img}, #{shopName}, #{queryName})")
+    @Insert("insert into jd_items (price, description, img, shop_name, query_name, detail_url) value (#{price}, #{description}, #{img}, #{shopName}, #{queryName}, #{detailUrl})")
     public void insetItems(Good good);
 
     @Select("select * from jd_items where query_name = #{name}")

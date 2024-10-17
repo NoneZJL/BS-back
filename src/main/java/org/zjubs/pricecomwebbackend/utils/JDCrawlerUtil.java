@@ -30,6 +30,8 @@ public class JDCrawlerUtil {
                 if ("ps-item".equals(element.attr("class"))) {
                     continue;
                 }
+                String sku = element.attr("data-sku"); // 获取 data-sku 属性值
+                String detailUrl = "https://item.jd.com/" + sku + ".html";
                 String pict = element.getElementsByTag("img").first().attr("data-lazy-img");
                 String priceText = element.getElementsByClass("p-price").first().text();
                 String price = extractNumber(priceText);
@@ -46,6 +48,7 @@ public class JDCrawlerUtil {
 //                System.out.println("shopName = " + shopName);
 //                System.out.println("name = " + description);
                 Good good = new Good();
+                good.setDetailUrl(detailUrl);
                 good.setQueryName(name);
                 good.setDescription(description);
                 good.setImg(pict);
