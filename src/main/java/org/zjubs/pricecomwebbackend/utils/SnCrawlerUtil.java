@@ -32,7 +32,7 @@ public class SnCrawlerUtil {
 
             // 创建 EdgeOptions 对象
             EdgeOptions options = new EdgeOptions();
-            options.addArguments("--headless"); // 无头模式
+            options.addArguments("--headless=old"); // 无头模式
 
             // 创建 WebDriver 对象
             WebDriver driver = new EdgeDriver(options);
@@ -41,7 +41,7 @@ public class SnCrawlerUtil {
             driver.get(url);
 
             // 等待页面加载完成
-            Thread.sleep(10000); // 等待5秒，确保页面加载完成
+            Thread.sleep(5000); // 等待5秒，确保页面加载完成
 
             // 获取页面源代码
             String pageSource = driver.getPageSource();
@@ -64,13 +64,16 @@ public class SnCrawlerUtil {
             Elements ul = document.getElementsByClass("general clearfix");
             Elements liList = ul.select("li");
             List<Good> goodList = new ArrayList<Good>();
-            int i = 0;
+//            int i = 0;
             for (Element li : liList) {
                 // 获取商品名称
                 String productName = li.select(".title-selling-point a").text();
 
                 // 获取商品价格
                 String productPrice = li.select(".def-price").text();
+                if (productPrice == null || productPrice.isEmpty()) {
+                    continue;
+                }
                 String price = extractNumber(productPrice);
 
                 // 获取商品链接
@@ -92,10 +95,10 @@ public class SnCrawlerUtil {
                 }
                 good.setShopName(productName);
                 goodList.add(good);
-                i++;
-                if (i == 16) {
-                    break;
-                }
+//                i++;
+//                if (i == 16) {
+//                    break;
+//                }
             }
             return goodList;
         } catch (Exception e) {
