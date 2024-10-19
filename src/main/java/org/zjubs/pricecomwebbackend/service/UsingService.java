@@ -144,4 +144,37 @@ public class UsingService {
             return ApiResult.fail(e.getMessage());
         }
     }
+
+    public ApiResult getRemaindersByToken(String token) {
+        try {
+            try {
+                JWTUtil.verify(token);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return ApiResult.notLogin();
+            }
+            Integer id = JWTUtil.getIdByToken(token);
+            List<Remainder> remaindersByUserId = usingMapper.getRemaindersByUserId(id);
+            return ApiResult.success(remaindersByUserId);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResult.fail(e.getMessage());
+        }
+    }
+
+    public ApiResult deleteRemainderById(Integer id, String token) {
+        try {
+            try {
+                JWTUtil.verify(token);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return ApiResult.notLogin();
+            }
+            usingMapper.deleteRemainderById(id);
+            return ApiResult.success();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResult.fail(e.getMessage());
+        }
+    }
 }

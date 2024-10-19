@@ -100,4 +100,32 @@ public class UsingController {
             return RespResult.fail(apiResult.message);
         }
     }
+
+    @GetMapping("/getRemainsers")
+    public RespResult getRemainders(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        ApiResult apiResult = usingService.getRemaindersByToken(token);
+        if (apiResult.ok) {
+            return RespResult.success(apiResult.payload);
+        } else {
+            if (JWTUtil.checkNotLogin(apiResult)) {
+                return RespResult.notLogin();
+            }
+            return RespResult.fail(apiResult.message);
+        }
+    }
+
+    @GetMapping("/deleteRemainder")
+    public RespResult deleteRemainder(@RequestParam Integer id, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        ApiResult apiResult = usingService.deleteRemainderById(id, token);
+        if (apiResult.ok) {
+            return RespResult.success();
+        } else {
+            if (JWTUtil.checkNotLogin(apiResult)) {
+                return RespResult.notLogin();
+            }
+            return RespResult.fail(apiResult.message);
+        }
+    }
 }

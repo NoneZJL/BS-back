@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.zjubs.pricecomwebbackend.entity.History;
+import org.zjubs.pricecomwebbackend.query.Remainder;
 
 import java.util.List;
 
@@ -27,4 +28,10 @@ public interface UsingMapper {
 
     @Insert("insert into remainder (user_id, description, price, img, detail_url, `from`) VALUE (#{userId}, #{description}, #{price}, #{img}, #{detailUrl}, #{from})")
     void insertRemainder(Integer userId, String description, Double price, String img, String detailUrl, String from);
+
+    @Select("select * from remainder where user_id = #{id}")
+    List<Remainder> getRemaindersByUserId(Integer id);
+
+    @Delete("delete from remainder where id = #{id}")
+    void deleteRemainderById(Integer id);
 }

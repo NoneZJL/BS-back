@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Remainder {
+    private Integer id;
     private String description;
     private Double price;
     private String img;
