@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zjubs.pricecomwebbackend.entity.Good;
 import org.zjubs.pricecomwebbackend.entity.History;
-import org.zjubs.pricecomwebbackend.mapper.JdMapper;
-import org.zjubs.pricecomwebbackend.mapper.SnMapper;
-import org.zjubs.pricecomwebbackend.mapper.UsingMapper;
-import org.zjubs.pricecomwebbackend.mapper.WphMapper;
+import org.zjubs.pricecomwebbackend.entity.User;
+import org.zjubs.pricecomwebbackend.mapper.*;
 import org.zjubs.pricecomwebbackend.query.ApiResult;
 import org.zjubs.pricecomwebbackend.query.Remainder;
+import org.zjubs.pricecomwebbackend.utils.EmailUtil;
 import org.zjubs.pricecomwebbackend.utils.JWTUtil;
 
 import java.util.List;
@@ -24,6 +23,10 @@ public class UsingService {
     private SnMapper snMapper;
     @Autowired
     private WphMapper wphMapper;
+    @Autowired
+    private EmailUtil emailUtil;
+    @Autowired
+    private UserMapper userMapper;
 
     public ApiResult getAllHistoryByUserId(String token) {
         try {
@@ -171,6 +174,33 @@ public class UsingService {
                 return ApiResult.notLogin();
             }
             usingMapper.deleteRemainderById(id);
+            return ApiResult.success();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResult.fail(e.getMessage());
+        }
+    }
+
+    public ApiResult sendRemindEmail(String token, Integer id) {
+        try {
+            try {
+                JWTUtil.verify(token);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return ApiResult.notLogin();
+            }
+            String username = JWTUtil.getUsernameByToken(token);
+            User user = userMapper.queryUserByUsername(username);
+            if (user == null) {
+                return ApiResult.fail("用户不存在");
+            }
+            String email = user.getEmail();
+            Remainder remind = usingMapper.getReminderById(id);
+            String description = remind.getDescription();
+            Double oldPrice = remind.getPrice();
+            Double newPrice = oldPrice * 0.9;
+            String url = remind.getDetailUrl();
+            emailUtil.sendRemainderEmail(email, description, oldPrice, newPrice, url);
             return ApiResult.success();
         } catch (Exception e) {
             System.out.println(e.getMessage());

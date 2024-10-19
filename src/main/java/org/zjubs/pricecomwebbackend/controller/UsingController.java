@@ -128,4 +128,18 @@ public class UsingController {
             return RespResult.fail(apiResult.message);
         }
     }
+
+    @GetMapping("/sendRemindEmail")
+    public RespResult sendRemindEmail(@RequestParam Integer id, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        ApiResult apiResult = usingService.sendRemindEmail(token, id);
+        if (apiResult.ok) {
+            return RespResult.success();
+        } else {
+            if (JWTUtil.checkNotLogin(apiResult)) {
+                return RespResult.notLogin();
+            }
+            return RespResult.fail(apiResult.message);
+        }
+    }
 }

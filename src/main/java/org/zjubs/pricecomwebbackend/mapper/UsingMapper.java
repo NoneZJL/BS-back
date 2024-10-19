@@ -32,6 +32,9 @@ public interface UsingMapper {
     @Select("select * from remainder where user_id = #{id}")
     List<Remainder> getRemaindersByUserId(Integer id);
 
+    @Select("select * from remainder where id = #{id}")
+    Remainder getReminderById(Integer id);
+
     @Delete("delete from remainder where id = #{id}")
     void deleteRemainderById(Integer id);
 }

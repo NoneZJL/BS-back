@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.zjubs.pricecomwebbackend.service.UserService;
+import org.zjubs.pricecomwebbackend.utils.EmailUtil;
 
 import java.util.Date;
 
@@ -16,6 +17,9 @@ class PriceComWebBackendApplicationTests {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private EmailUtil emailUtil;
+
  	@Test
 	void contextLoads() {
 	}
@@ -53,5 +57,10 @@ class PriceComWebBackendApplicationTests {
 	public void sendEmail() {
 //		userService.sendEmailJustifyCode("1445675246@qq.com");
 		userService.sendEmailJustifyCode("1290217090@qq.com");
+	}
+
+	@Test
+	public void sendReminderEmail() {
+		emailUtil.sendRemainderEmail("1290217090@qq.com","Macbook", 18888.0, 14999.0,"https://item.jd.com/100100209772.html" );
 	}
 }
