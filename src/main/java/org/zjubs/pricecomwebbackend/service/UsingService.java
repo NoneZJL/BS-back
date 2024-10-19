@@ -2,8 +2,12 @@ package org.zjubs.pricecomwebbackend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.zjubs.pricecomwebbackend.entity.Good;
 import org.zjubs.pricecomwebbackend.entity.History;
+import org.zjubs.pricecomwebbackend.mapper.JdMapper;
+import org.zjubs.pricecomwebbackend.mapper.SnMapper;
 import org.zjubs.pricecomwebbackend.mapper.UsingMapper;
+import org.zjubs.pricecomwebbackend.mapper.WphMapper;
 import org.zjubs.pricecomwebbackend.query.ApiResult;
 import org.zjubs.pricecomwebbackend.utils.JWTUtil;
 
@@ -13,6 +17,12 @@ import java.util.List;
 public class UsingService {
     @Autowired
     private UsingMapper usingMapper;
+    @Autowired
+    private JdMapper jdMapper;
+    @Autowired
+    private SnMapper snMapper;
+    @Autowired
+    private WphMapper wphMapper;
 
     public ApiResult getAllHistoryByUserId(String token) {
         try {
@@ -80,6 +90,32 @@ public class UsingService {
             Integer id = JWTUtil.getIdByToken(token);
             usingMapper.deleteAllHistoryByUserId(id);
             return ApiResult.success();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResult.fail(e.getMessage());
+        }
+    }
+
+    public ApiResult queryGoodsByDetailUrlAndFrom(String from, String url, String token) {
+        try {
+            try {
+                JWTUtil.verify(token);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return ApiResult.notLogin();
+            }
+            if ("jd".equals(from)) {
+                List<Good> goodList = jdMapper.queryFoodsByDetailUrl(url);
+                return ApiResult.success(goodList);
+            } else if ("sn".equals(from)) {
+                List<Good> goodList = snMapper.queryFoodsByDetailUrl(url);
+                return ApiResult.success(goodList);
+            } else if ("wph".equals(from)) {
+                List<Good> goodList = wphMapper.queryFoodsByDetailUrl(url);
+                return ApiResult.success(goodList);
+            } else {
+                return ApiResult.fail("查询失败");
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResult.fail(e.getMessage());

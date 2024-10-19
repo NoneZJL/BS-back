@@ -14,4 +14,7 @@ public interface SnMapper {
 
     @Select("select * from sn_items where query_name = #{name}")
     public List<Good> queryGoodsBySearchingName(String name);
+
+    @Select(("select * from sn_items where detail_url = #{url}"))
+    public List<Good> queryFoodsByDetailUrl(String url);
 }

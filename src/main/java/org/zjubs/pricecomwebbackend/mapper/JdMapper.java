@@ -15,4 +15,7 @@ public interface JdMapper {
 
     @Select("select * from jd_items where query_name = #{name}")
     public List<Good> queryGoodsBySearchingName(String name);
+
+    @Select(("select * from jd_items where detail_url = #{url}"))
+    public List<Good> queryFoodsByDetailUrl(String url);
 }

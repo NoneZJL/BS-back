@@ -2,10 +2,9 @@ package org.zjubs.pricecomwebbackend.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.zjubs.pricecomwebbackend.query.ApiResult;
+import org.zjubs.pricecomwebbackend.query.GoodDetail;
 import org.zjubs.pricecomwebbackend.query.RespResult;
 import org.zjubs.pricecomwebbackend.service.UsingService;
 import org.zjubs.pricecomwebbackend.utils.JWTUtil;
@@ -63,6 +62,22 @@ public class UsingController {
         ApiResult apiResult = usingService.deleteAllHistoryByUserId(token);
         if (apiResult.ok) {
             return RespResult.success();
+        } else {
+            if (JWTUtil.checkNotLogin(apiResult)) {
+                return RespResult.notLogin();
+            }
+            return RespResult.fail(apiResult.message);
+        }
+    }
+
+    @PostMapping("/getDetail")
+    public RespResult getGoodDetail(@RequestBody GoodDetail detail, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String from = detail.getFrom();
+        String url = detail.getUrl();
+        ApiResult apiResult = usingService.queryGoodsByDetailUrlAndFrom(from, url, token);
+        if (apiResult.ok) {
+            return RespResult.success(apiResult.payload);
         } else {
             if (JWTUtil.checkNotLogin(apiResult)) {
                 return RespResult.notLogin();
