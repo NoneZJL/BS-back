@@ -24,4 +24,7 @@ public interface UsingMapper {
 
     @Delete("delete from history where user_id = #{id}")
     void deleteAllHistoryByUserId(Integer id);
+
+    @Insert("insert into remainder (user_id, description, price, img, detail_url, `from`) VALUE (#{userId}, #{description}, #{price}, #{img}, #{detailUrl}, #{from})")
+    void insertRemainder(Integer userId, String description, Double price, String img, String detailUrl, String from);
 }

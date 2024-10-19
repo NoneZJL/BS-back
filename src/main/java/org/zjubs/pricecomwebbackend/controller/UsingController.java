@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.zjubs.pricecomwebbackend.query.ApiResult;
 import org.zjubs.pricecomwebbackend.query.GoodDetail;
+import org.zjubs.pricecomwebbackend.query.Remainder;
 import org.zjubs.pricecomwebbackend.query.RespResult;
 import org.zjubs.pricecomwebbackend.service.UsingService;
 import org.zjubs.pricecomwebbackend.utils.JWTUtil;
@@ -78,6 +79,20 @@ public class UsingController {
         ApiResult apiResult = usingService.queryGoodsByDetailUrlAndFrom(from, url, token);
         if (apiResult.ok) {
             return RespResult.success(apiResult.payload);
+        } else {
+            if (JWTUtil.checkNotLogin(apiResult)) {
+                return RespResult.notLogin();
+            }
+            return RespResult.fail(apiResult.message);
+        }
+    }
+
+    @PostMapping("/insertRemainder")
+    public RespResult insertRemainder(@RequestBody Remainder remainder, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        ApiResult apiResult = usingService.insertRemainder(remainder, token);
+        if (apiResult.ok) {
+            return RespResult.success();
         } else {
             if (JWTUtil.checkNotLogin(apiResult)) {
                 return RespResult.notLogin();

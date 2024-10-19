@@ -9,6 +9,7 @@ import org.zjubs.pricecomwebbackend.mapper.SnMapper;
 import org.zjubs.pricecomwebbackend.mapper.UsingMapper;
 import org.zjubs.pricecomwebbackend.mapper.WphMapper;
 import org.zjubs.pricecomwebbackend.query.ApiResult;
+import org.zjubs.pricecomwebbackend.query.Remainder;
 import org.zjubs.pricecomwebbackend.utils.JWTUtil;
 
 import java.util.List;
@@ -116,6 +117,28 @@ public class UsingService {
             } else {
                 return ApiResult.fail("查询失败");
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResult.fail(e.getMessage());
+        }
+    }
+
+    public ApiResult insertRemainder(Remainder remainder, String token) {
+        try {
+            try {
+                JWTUtil.verify(token);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return ApiResult.notLogin();
+            }
+            Integer id = JWTUtil.getIdByToken(token);
+            String description = remainder.getDescription();
+            String img = remainder.getImg();
+            String from = remainder.getFrom();
+            Double price = remainder.getPrice();
+            String detailUrl = remainder.getDetailUrl();
+            usingMapper.insertRemainder(id, description, price, img, detailUrl, from);
+            return ApiResult.success();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResult.fail(e.getMessage());
