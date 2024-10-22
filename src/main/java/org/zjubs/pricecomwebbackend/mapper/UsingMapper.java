@@ -26,15 +26,15 @@ public interface UsingMapper {
     @Delete("delete from history where user_id = #{id}")
     void deleteAllHistoryByUserId(Integer id);
 
-    @Insert("insert into remainder (user_id, description, price, img, detail_url, `from`) VALUE (#{userId}, #{description}, #{price}, #{img}, #{detailUrl}, #{from})")
+    @Insert("insert into reminder (user_id, description, price, img, detail_url, `from`) VALUE (#{userId}, #{description}, #{price}, #{img}, #{detailUrl}, #{from})")
     void insertRemainder(Integer userId, String description, Double price, String img, String detailUrl, String from);
 
-    @Select("select * from remainder where user_id = #{id}")
+    @Select("select * from reminder where user_id = #{id}")
     List<Remainder> getRemaindersByUserId(Integer id);
 
-    @Select("select * from remainder where id = #{id}")
+    @Select("select * from reminder where id = #{id}")
     Remainder getReminderById(Integer id);
 
-    @Delete("delete from remainder where id = #{id}")
+    @Delete("delete from reminder where id = #{id}")
     void deleteRemainderById(Integer id);
 }

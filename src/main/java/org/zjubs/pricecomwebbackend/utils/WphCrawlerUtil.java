@@ -26,7 +26,7 @@ public class WphCrawlerUtil {
         try {
 //            Document document = Jsoup.connect(url).get();
 //            System.out.println(document);
-            URL resource = SnCrawlerUtil.class.getClassLoader().getResource("msedgedriver.exe");
+            URL resource = WphCrawlerUtil.class.getClassLoader().getResource("msedgedriver.exe");
             if (resource == null) {
                 throw new IllegalStateException("msedgedriver.exe not found in resources");
             }
@@ -65,6 +65,9 @@ public class WphCrawlerUtil {
                 // String discount = goodsItem.select(".c-goods-item__discount").text();
                 // 提取图片路径
                 String imageUrl = goodsItem.select(".c-goods-item__img img.lazy").attr("data-original");
+                if (imageUrl.isEmpty()) {
+                    continue;
+                }
                 // 提取商品链接
                 String productLink = goodsItem.select("a").attr("href");
                 // 输出商品信息

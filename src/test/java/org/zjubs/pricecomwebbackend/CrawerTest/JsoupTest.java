@@ -38,4 +38,9 @@ public class JsoupTest {
         List<Good> search = WphCrawlerUtil.search("手机");
         System.out.println(search);
     }
+
+    @Test
+    public void singleGoodTest() {
+        JDCrawlerUtil.getSingleGoodPrice("https://item.jd.com/100115333286.html");
+    }
 }
