@@ -41,6 +41,13 @@ public class JsoupTest {
     }
 
     @Test
+    public void singleTest() {
+        String url = "https://www.xiaomiyoupin.com/detail?gid=153253";
+        Double price = WphCrawlerUtil.getSingleItemPrice(url);
+        System.out.println("获取的价格为 " + price + " 元");
+    }
+
+    @Test
     public void singleGoodTest() {
         JDCrawlerUtil.getSingleGoodPrice("https://item.jd.com/100115333286.html");
     }

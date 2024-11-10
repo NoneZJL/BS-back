@@ -77,6 +77,31 @@ public class WphCrawlerUtil {
         }
     }
 
+    public static Double getSingleItemPrice(String url) {
+        try {
+            EdgeOptions options = new EdgeOptions();
+            options.addArguments("--headless=old"); // 无头模式
+            WebDriver driver = new EdgeDriver(options);
+            driver.get(url);
+            Thread.sleep(5000);
+            String pageSource = driver.getPageSource();
+            driver.quit();
+            Document document = Jsoup.parse(pageSource);
+            Elements priceElements = document.select(".price .value");
+            if (!priceElements.isEmpty()) {
+                String price = priceElements.first().text();
+                System.out.println("商品价格: " + price);
+                return Double.valueOf(price);
+            } else {
+                System.out.println("未找到价格信息");
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
     private static String extractNumber(String text) {
         if (text == null || text.isEmpty()) {
             return "";
