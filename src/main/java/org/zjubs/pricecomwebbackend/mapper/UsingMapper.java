@@ -37,4 +37,7 @@ public interface UsingMapper {
 
     @Delete("delete from reminder where id = #{id}")
     void deleteRemainderById(Integer id);
+
+    @Select("select * from reminder")
+    List<Remainder> getAllReminder();
 }

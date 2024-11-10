@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Remainder {
     private Integer id;
+    private Integer userId;
     private String description;
     private Double price;
     private String img;

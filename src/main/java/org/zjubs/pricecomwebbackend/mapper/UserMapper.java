@@ -25,4 +25,7 @@ public interface UserMapper {
 
     @Update("update user set password = #{password} where email = #{email}")
     public void modifyPasswordByEmail(String password, String email);
+
+    @Select("select * from user where id = #{id};")
+    public User getUserById(Integer id);
 }
