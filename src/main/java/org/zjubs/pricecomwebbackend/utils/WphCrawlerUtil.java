@@ -14,78 +14,61 @@ import org.zjubs.pricecomwebbackend.entity.Good;
 
 import java.net.URL;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WphCrawlerUtil {
-    private static final String BASE_URL = "https://category.vip.com/suggest.php?keyword=";
+    //    private static final String BASE_URL = "https://category.vip.com/suggest.php?keyword=";
+    private static final String BASE_URL = "https://www.xiaomiyoupin.com/search?keyword=";
+//    private static final String BASE_URL = "https://you.163.com/search?keyword=";
 
     public static List<Good> search(String name) {
         String url = BASE_URL + name;
         List<Good> goodList = new ArrayList<Good>();
         try {
-//            Document document = Jsoup.connect(url).get();
-//            System.out.println(document);
-            URL resource = WphCrawlerUtil.class.getClassLoader().getResource("msedgedriver.exe");
-            if (resource == null) {
-                throw new IllegalStateException("msedgedriver.exe not found in resources");
-            }
-            // 设置 EdgeDriver 路径
-            System.setProperty("webdriver.edge.driver", resource.getPath());
             // 创建 EdgeOptions 对象
             EdgeOptions options = new EdgeOptions();
+//            options.setExperimentalOption("debuggerAddress", "127.0.0.1:9222");
             options.addArguments("--headless=old"); // 无头模式
-            // 创建 WebDriver 对象
             WebDriver driver = new EdgeDriver(options);
-            // 打开页面
             driver.get(url);
-            // 等待页面加载完成
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".c-goods-item__img img.lazy")));
+            Thread.sleep(5000);
             // 获取页面源代码
             String pageSource = driver.getPageSource();
             // 关闭 WebDriver
             driver.quit();
             Document document = Jsoup.parse(pageSource);
-            Elements goodsItems = document.select(".c-goods-item");
-            // 遍历每个商品项
-            int i = 0;
+            Elements goodsItems = document.select(".pro-item");
             for (Element goodsItem : goodsItems) {
                 // 提取商品名称
-                String productName = goodsItem.select(".c-goods-item__name").text();
-                // 提取特卖价
-                String salePrice = goodsItem.select(".c-goods-item__sale-price").text();
-//                if (salePrice == null || salePrice.isEmpty()) {
-//                    continue;
-//                }
-                String price = extractNumber(salePrice);
-                // 提取市场价
-                // String marketPrice = goodsItem.select(".c-goods-item__market-price").text();
-                // 提取折扣
-                // String discount = goodsItem.select(".c-goods-item__discount").text();
+                String productName = goodsItem.select(".pro-name").attr("title");
+                // 提取商品描述
+//                String productDesc = goodsItem.select(".pro-desc").attr("title");
+                // 提取商品价格
+                String priceText = goodsItem.select(".pro-price .m-num").text();
+                double price = Double.parseDouble(priceText);
                 // 提取图片路径
-                String imageUrl = goodsItem.select(".c-goods-item__img img.lazy").attr("data-original");
+                String imageUrl = goodsItem.select(".pro-img img").attr("src");
                 if (imageUrl.isEmpty()) {
                     continue;
                 }
                 // 提取商品链接
-                String productLink = goodsItem.select("a").attr("href");
+                String productLink = goodsItem.attr("data-src");
+//                System.out.println("-------------------------");
+//                System.out.println("名称 = " + productName);
+//                System.out.println("描述 = " + productDesc);
+//                System.out.println("价格 = " + price);
+//                System.out.println("图片路径 = " + imageUrl);
+//                System.out.println("商品链接 = " + productLink);
                 // 输出商品信息
                 Good good = new Good();
                 good.setQueryName(name);
                 good.setDescription(productName);
                 good.setImg(imageUrl);
                 good.setDetailUrl(productLink);
-                if (!price.isEmpty()) {
-                    good.setPrice(Double.valueOf(price));
-                } else {
-                    good.setPrice(0.0); // 设置默认价格
-                }
+                good.setPrice(price);
                 goodList.add(good);
-                i++;
-                if (i == 30) {
-                    break;
-                }
             }
             return goodList;
         } catch (Exception e) {

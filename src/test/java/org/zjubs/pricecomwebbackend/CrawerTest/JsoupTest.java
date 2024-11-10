@@ -31,6 +31,7 @@ public class JsoupTest {
     @Test
     public void snTest() {
         List<Good> search = SnCrawlerUtil.search("电脑");
+        System.out.println(search);
     }
 
     @Test

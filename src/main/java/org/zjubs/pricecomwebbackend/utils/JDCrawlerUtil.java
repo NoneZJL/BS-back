@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 public class JDCrawlerUtil {
 
     private static final String JD_SEARCH_URL = "https://search.jd.com/Search?keyword=";
-    private static final String thor = "A8248FF840DAA128CB32CB9DD32D50475F0766FF5DADED4CCD580A06C3FEC30BB07CA795456E1333F1599B80F906C0BDF2BE9BFBCF486B526F38D863BE62118D57BDD846C123665160C0C972C1AB4C7435AEF7471E5A276D56ACA791397EE40A8D105D3276349797A8FA0FA62EB28BE9F05F64A3ABFBBE2D88A669FF847EDEF5C7EF3AF6566F53F72984733F228FF0C07E6A6823938815D1AB75DB5A56328B6A";
+    private static final String thor = "A8248FF840DAA128CB32CB9DD32D50475F0766FF5DADED4CCD580A06C3FEC30B4E3BF0F93D9361662B0DB27303BB85A209101B9EACD333E9130DA5A09934CD8379CD0819C51C1C87F559C713CC65A2C2E7AF6237D44A78DC568F72E003005D6A30D2C47C57488948B72B1390CBC04D06BD4FE2081456681D131E6CF5408DB72A55985A45F7412E9C2BF83E683241B155A24DA733F0AABD68B772431036DE6630";
 
     public static List<Good> searchAndInsert(String name) {
         String url = JD_SEARCH_URL + name;
@@ -43,6 +43,9 @@ public class JDCrawlerUtil {
                 String pict = element.getElementsByTag("img").first().attr("data-lazy-img");
                 String priceText = element.getElementsByClass("p-price").first().text();
                 String price = extractNumber(priceText);
+                if (price.isEmpty()) {
+                    continue;
+                }
                 String shopName = element.getElementsByClass("p-shop").first().text();
                 String description = element.getElementsByTag("em").last().text();
                 Good good = new Good();

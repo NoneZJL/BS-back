@@ -23,15 +23,16 @@ public class SnCrawlerUtil {
     public static List<Good> search(String keyword) {
         String url = BASE_SN_URL + keyword + "/";
         try {
-            URL resource = SnCrawlerUtil.class.getClassLoader().getResource("msedgedriver.exe");
-            if (resource == null) {
-                throw new IllegalStateException("msedgedriver.exe not found in resources");
-            }
+//            URL resource = SnCrawlerUtil.class.getClassLoader().getResource("msedgedriver.exe");
+//            if (resource == null) {
+//                throw new IllegalStateException("msedgedriver.exe not found in resources");
+//            }
             // 设置 EdgeDriver 路径
-            System.setProperty("webdriver.edge.driver", resource.getPath());
+//            System.setProperty("webdriver.edge.driver", resource.getPath());
 
             // 创建 EdgeOptions 对象
             EdgeOptions options = new EdgeOptions();
+//            options.setExperimentalOption("debuggerAddress", "127.0.0.1:9222");
             options.addArguments("--headless=old"); // 无头模式
 
             // 创建 WebDriver 对象
