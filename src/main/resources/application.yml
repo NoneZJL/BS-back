@@ -6,6 +6,10 @@ spring:
     username: root
     url: jdbc:mysql://localhost:3306/price_compare?allowPublicKeyRetrieval=true&useSSL=false
     password: "zhao1290"
+  sql:
+    init:
+      schema-locations: classpath:db/init.sql
+      mode: always
   mail:
     username: zjubszjl@163.com
     password: CZaRY36PTYuw8yd6
