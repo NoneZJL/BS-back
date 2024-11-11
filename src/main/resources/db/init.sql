@@ -45,7 +45,7 @@ create table if not exists `sn_items` (
     `time` datetime not null default current_timestamp,
     `shop_name` varchar(255) default null ,
     `query_name` varchar(255) not null ,
-    `detail_url` varchar(255) default null ,
+    `detail_url` varchar(2047) default null ,
     primary key (`id`)
 );
 
